@@ -1,5 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Link from "next/link";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,7 +21,22 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <body>
+        <nav className="navbar navbar-dark bg-dark px-4">
+          <Link href="/" className="navbar-brand">
+            VoiceBot
+          </Link>
+
+          <div>
+            <Link href="/" className="btn btn-outline-light me-2">
+              Dashboard
+            </Link>
+            <Link href="/calls" className="btn btn-outline-light">
+              Call History
+            </Link>
+          </div>
+        </nav>
+
         {children}
       </body>
     </html>
