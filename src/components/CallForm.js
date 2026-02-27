@@ -8,16 +8,24 @@ export default function CallForm() {
   const [result, setResult] = useState(null);
 
   const handleSubmit = async () => {
-    try {
-      setLoading(true);
-      const data = await startCall(phone);
-      setResult(data);
-    } catch (err) {
-      setResult({ error: "Something went wrong" });
-    } finally {
-      setLoading(false);
-    }
-  };
+  try {
+    setLoading(true);
+    setResult(null);
+
+    const data = await startCall(phone);
+    setResult(data);
+
+  } catch (err) {
+    // هنا هنجيب الرسالة الحقيقية من Twilio
+    setResult({
+      error: err.message || "Unknown error",
+      code: err.code || null,
+    });
+    
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="flex flex-col gap-3 w-80">
@@ -39,11 +47,12 @@ export default function CallForm() {
         {loading ? "Calling..." : "Start Call"}
       </button>
 
-      {result && (
-        <pre className="bg-gray-100 p-2 rounded text-sm">
-          {JSON.stringify(result, null, 2)}
-        </pre>
-      )}
+      {result?.error && (
+  <div className="alert alert-danger mt-3">
+    Error: {result.error}
+    {result.code && <div>Code: {result.code}</div>}
+  </div>
+)}
     </div>
   );
 }

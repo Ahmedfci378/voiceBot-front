@@ -1,7 +1,5 @@
-export const API_BASE = process.env.NEXT_PUBLIC_API_BASE;
-
 export const startCall = async (phoneNumber) => {
-  const res = await fetch(`${API_BASE}/api/outbound/call`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/outbound/call`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -9,7 +7,14 @@ export const startCall = async (phoneNumber) => {
     body: JSON.stringify({ phoneNumber }),
   });
 
-  return res.json();
+  const data = await res.json();
+
+  if (!res.ok) {
+    // نرمي الخطأ الحقيقي
+    throw data;
+  }
+
+  return data;
 };
 
 export const getCalls = async () => {
