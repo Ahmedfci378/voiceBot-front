@@ -23,3 +23,15 @@ export const getCalls = async () => {
 
   return res.json();
 };
+
+export const getCallById = async (id) => {
+  const res = await fetch(`${API_BASE}/api/calls/${id}`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch call");
+  }
+
+  return res.json();
+};
