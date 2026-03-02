@@ -1,3 +1,4 @@
+
 export const startCall = async (phoneNumber) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/outbound/call`, {
     method: "POST",
@@ -18,25 +19,24 @@ export const startCall = async (phoneNumber) => {
 };
 
 export const getCalls = async () => {
-  const res = await fetch(`${API_BASE}/api/calls`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/calls`, {
     cache: "no-store",
   });
 
   if (!res.ok) {
     throw new Error("Failed to fetch calls");
   }
-  const data = await res.json();
-  return data;
+  return res.json();
 };
 
 export const getCallById = async (id) => {
-  const res = await fetch(`${API_BASE}/api/calls/${id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/calls/${id}`, {
     cache: "no-store",
   });
 
   if (!res.ok) {
     throw new Error("Failed to fetch call");
   }
-
+  
   return res.json();
 };

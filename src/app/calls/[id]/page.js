@@ -6,13 +6,15 @@ import { useParams } from "next/navigation";
 
 export default function CallDetails() {
   const { id } = useParams();
-  const [call, setCall] = useState(null);
+  const [call, setCalls] = useState(null);
 
   useEffect(() => {
     const fetchCall = async () => {
       try {
         const data = await getCallById(id);
-        setCall(data);
+        console.log(data.data);
+        
+        setCalls(data.data);  
       } catch (err) {
         console.error(err);
       }

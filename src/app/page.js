@@ -11,7 +11,7 @@ export default function Home() {
     const fetchData = async () => {
       try {
         const data = await getCalls();
-        setCalls(data);
+        setCalls(Array.isArray(data?.data) ? data.data : []);
       } catch (err) {
         console.error(err);
       }

@@ -12,8 +12,12 @@ export default function CallsPage() {
     const fetchData = async () => {
       try {
         const data = await getCalls();
-        setCalls(data);
-      } catch (error) {
+        console.log("API DATA:", data.data);
+
+        setCalls(Array.isArray(data?.data) ? data.data : []);  
+      
+      } 
+        catch (error) {
         console.error("Error fetching calls:", error);
       } finally {
         setLoading(false);
