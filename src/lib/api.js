@@ -25,8 +25,8 @@ export const getCalls = async () => {
   if (!res.ok) {
     throw new Error("Failed to fetch calls");
   }
-
-  return res.json();
+  const data = await res.json();
+  return data;
 };
 
 export const getCallById = async (id) => {
