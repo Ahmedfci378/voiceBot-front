@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import { startCall } from "../lib/api";
+import { startCall } from "../../../lib/api";
 
 export default function CallForm() {
   const [phone, setPhone] = useState("");

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getCalls } from "../../lib/api";
+import { getCalls } from "../../../lib/api";
 import Link from "next/link";
 
 export default function CallsPage() {
@@ -14,7 +14,7 @@ export default function CallsPage() {
         const data = await getCalls();
         console.log("API DATA:", data.data);
 
-        setCalls(Array.isArray(data?.data) ? data.data : []);  
+        setCalls(Array.isArray(data?.data) ? data.data : []); 
       
       } 
         catch (error) {

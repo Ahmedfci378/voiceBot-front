@@ -22,7 +22,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <nav className="navbar navbar-dark bg-dark px-4">
+        {/* <nav className="navbar navbar-dark bg-dark px-4">
           <Link href="/" className="navbar-brand">
             VoiceBot
           </Link>
@@ -35,7 +35,7 @@ export default function RootLayout({ children }) {
               Call History
             </Link>
           </div>
-        </nav>
+        </nav> */}
 
         {children}
       </body>

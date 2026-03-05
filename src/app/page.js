@@ -1,45 +1,47 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import CallForm from "../components/CallForm";
-import { getCalls } from "../lib/api";
-
+import CallForm from "./(dashboard)/callform/page";
+import { getCalls } from "@/lib/api";
+import { redirect } from "next/navigation";
 export default function Home() {
-  const [calls, setCalls] = useState([]);
+  // const [calls, setCalls] = useState([]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getCalls();
-        setCalls(Array.isArray(data?.data) ? data.data : []);
-      } catch (err) {
-        console.error(err);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const data = await getCalls();
+  //       setCalls(Array.isArray(data?.data) ? data.data : []);
+  //     } catch (err) {
+  //       console.error(err);
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
-  const totalCalls = calls.length;
+  // const totalCalls = calls.length;
 
-  const activeCalls = calls.filter(
-    (call) => call.status === "in-progress"
-  ).length;
+  // const activeCalls = calls.filter(
+  //   (call) => call.status === "in-progress"
+  // ).length;
 
-  const successRate =
-    totalCalls > 0
-      ? Math.round((calls.filter(c => c.status === "completed").length / totalCalls) * 100)
-      : 0;
+  // const successRate =
+  //   totalCalls > 0
+  //     ? Math.round((calls.filter(c => c.status === "completed").length / totalCalls) * 100)
+  //     : 0;
 
-  return (
-    <div className="container py-5">
 
-      <div className="text-center mb-5">
+        redirect("/dashboard");
+
+    // <div className="container py-5">
+
+      {/* <div className="text-center mb-5">
         <h1 className="fw-bold">📊 Dashboard</h1>
-      </div>
+      </div> */}
 
       {/* Stats */}
-      <div className="row mb-5">
+      {/* <div className="row mb-5">
         <div className="col-md-4 mb-3">
           <div className="card shadow-sm text-center p-3">
             <h5>Total Calls</h5>
@@ -60,13 +62,13 @@ export default function Home() {
             <h2>{successRate}%</h2>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Call Form */}
-      <div className="card shadow p-4 mx-auto" style={{ maxWidth: "500px" }}>
+      {/* <div className="card shadow p-4 mx-auto" style={{ maxWidth: "500px" }}>
         <CallForm />
-      </div>
+      </div> */}
 
-    </div>
-  );
+    {/* </div> */}
+  
 }

@@ -29,6 +29,16 @@ export const getCalls = async () => {
   return res.json();
 };
 
+export const getProjects=async()=>{
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/projects`, {
+    cache: "no-store",
+  });
+  if (!res.ok) {
+    throw new Error("Failed to fetch projects");
+  }
+  return res.json();
+};
+
 export const getCallById = async (id) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/calls/${id}`, {
     cache: "no-store",

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { getCallById } from "../../../lib/api";
+import { getCallById } from "../../../../lib/api";
 import { useParams } from "next/navigation";
 
 export default function CallDetails() {
