@@ -11,7 +11,7 @@ export default function DashboardLayout({ children }) {
   const menuItems = [
     { name: "Dashboard", icon: "📊", path: "/dashboard" },
     { name: "Calls", icon: "📞", path: "/calls" },
-    { name: "Projects", icon: "🏗", path: "/projects" },
+    { name: "Projects", icon: "🏗", path: "/projects"},
   ];
 
   const features = [

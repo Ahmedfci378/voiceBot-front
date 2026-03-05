@@ -96,11 +96,11 @@ export default function DashboardPage() {
 
         </button>
          {result?.error && (
-  <div className="alert alert-danger mt-3">
-    Error: {result.error}
-    {result.code && <div>Code: {result.code}</div>}
-  </div>
-)}
+       <div className="alert alert-danger mt-3">
+        Error: {result.error}
+        {result.code && <div>Code: {result.code}</div>}
+     </div>
+    )}
       </div>
 
       {/* Stats */}
