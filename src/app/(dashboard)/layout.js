@@ -8,50 +8,80 @@ export default function DashboardLayout({ children }) {
 
   const isActive = (path) => pathname === path;
 
+  const menuItems = [
+    { name: "Dashboard", icon: "📊", path: "/dashboard" },
+    { name: "Calls", icon: "📞", path: "/calls" },
+    { name: "Projects", icon: "🏗", path: "/projects" },
+  ];
+
+  const features = [
+    { name: "AI Calls", icon: "🤖", path: "/ai-calls" },
+    { name: "Analytics", icon: "📈", path: "/analytics" },
+    { name: "Leads", icon: "👥", path: "/leads" },
+    { name: "Settings", icon: "⚙", path: "/settings" },
+  ];
+
   return (
     <div className="d-flex min-vh-100">
 
       {/* Sidebar */}
-      <div
-        style={{ width: "260px", background: "#111827" }}
-        className="text-white p-4"
-      >
-        <h4 className="fw-bold mb-4">🚀 VoiceBot SaaS</h4>
+      <div className="sidebar">
 
-        <div className="d-flex flex-column gap-3">
-
-          <Link
-            href="/dashboard"
-            className={`text-decoration-none ${
-              isActive("/dashboard") ? "text-warning fw-bold" : "text-white"
-            }`}
-          >
-            📊 Dashboard
-          </Link>
-
-          <Link
-            href="/calls"
-            className={`text-decoration-none ${
-              isActive("/calls") ? "text-warning fw-bold" : "text-white"
-            }`}
-          >
-            📞 Calls
-          </Link>
-
-          <Link
-            href="/projects"
-            className={`text-decoration-none ${
-              isActive("/projects") ? "text-warning fw-bold" : "text-white"
-            }`}
-          >
-            🏗 Projects
-          </Link>
-
+        {/* Logo */}
+        <div className="sidebar-logo">
+          <h3>🏢 Palm Hills</h3>
+          <span>AI Sales Assistant</span>
         </div>
+
+        {/* MAIN */}
+        <div className="sidebar-section">
+          <p className="sidebar-title">MAIN</p>
+
+          {menuItems.map((item) => (
+            <Link
+              key={item.path}
+              href={item.path}
+              className={`sidebar-link ${
+                isActive(item.path) ? "active-link" : ""
+              }`}
+            >
+              <span className="icon">{item.icon}</span>
+              {item.name}
+            </Link>
+          ))}
+        </div>
+
+        {/* FEATURES */}
+        <div className="sidebar-section">
+          <p className="sidebar-title">FEATURES</p>
+
+          {features.map((item) => (
+            <Link
+              key={item.path}
+              href={item.path}
+              className={`sidebar-link ${
+                isActive(item.path) ? "active-link" : ""
+              }`}
+            >
+              <span className="icon">{item.icon}</span>
+              {item.name}
+            </Link>
+          ))}
+        </div>
+
+        {/* User */}
+        <div className="sidebar-user">
+          <div className="user-avatar">A</div>
+          <div>
+            <div className="user-name">Ahmed</div>
+            <div className="user-role">Admin</div>
+          </div>
+        </div>
+
       </div>
 
       {/* Content */}
-      <div className="flex-grow-1 p-5 bg-light">
+      <div className="content-area">
         {children}
       </div>
 

@@ -22,22 +22,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        {/* <nav className="navbar navbar-dark bg-dark px-4">
-          <Link href="/" className="navbar-brand">
-            VoiceBot
-          </Link>
-
-          <div>
-            <Link href="/" className="btn btn-outline-light me-2">
-              Dashboard
-            </Link>
-            <Link href="/calls" className="btn btn-outline-light">
-              Call History
-            </Link>
-          </div>
-        </nav> */}
-
+        
         {children}
+
       </body>
     </html>
   );
