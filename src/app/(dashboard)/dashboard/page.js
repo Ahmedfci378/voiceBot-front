@@ -1,5 +1,8 @@
 "use client";
 
+import { useState } from "react";
+import { startCall } from "../../../lib/api";
+
 import {
   LineChart,
   Line,
@@ -14,6 +17,29 @@ import {
 
 export default function DashboardPage() {
 
+  const [phone, setPhone] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [result, setResult] = useState(null);
+  
+    const handleSubmit = async () => {
+    try {
+      setLoading(true);
+      setResult(null);
+  
+      const data = await startCall(phone);
+      setResult(data);
+  
+    } catch (err) {
+      // هنا هنجيب الرسالة الحقيقية من Twilio
+      setResult({
+        error: err.message || "Unknown error",
+        code: err.code || null,
+      });
+      
+    } finally {
+      setLoading(false);
+    }
+  };
   const stats = {
     totalCalls: 248,
     activeCalls: 32,
@@ -54,9 +80,27 @@ export default function DashboardPage() {
         </p>
 
         {/* Call Button */}
-        <button className="btn btn-warning fw-bold">
+        <input
+        type="text"
+        placeholder="Enter phone number"
+        className="border p-2 rounded"
+        value={phone}
+        onChange={(e) => setPhone(e.target.value)}
+      />
+        <button className="btn btn-warning fw-bold"
+        onClick={handleSubmit}
+        disabled={loading}
+        >
           📞 Start New Call
+          {loading ? "Calling..." : "Start Call"}
+
         </button>
+         {result?.error && (
+  <div className="alert alert-danger mt-3">
+    Error: {result.error}
+    {result.code && <div>Code: {result.code}</div>}
+  </div>
+)}
       </div>
 
       {/* Stats */}
