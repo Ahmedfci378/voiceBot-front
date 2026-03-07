@@ -15,8 +15,8 @@ export default function DashboardLayout({ children }) {
   ];
 
   const features = [
-    { name: "AI Calls", icon: "🤖", path: "/ai-calls" },
-    { name: "Analytics", icon: "📈", path: "/analytics" },
+    { name: "campaigns", icon: "🤖", path: "/campaigns" },
+    { name: "Analytics", icon: "📈", path: "/analysis" },
     { name: "Leads", icon: "👥", path: "/leads" },
     { name: "Settings", icon: "⚙", path: "/settings" },
   ];

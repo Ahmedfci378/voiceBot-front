@@ -39,6 +39,18 @@ export const getProjects=async()=>{
   return res.json();
 };
 
+export const deleteProject = async (id) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/projects/${id}`, {
+    method: "DELETE",
+  });
+
+  if (!res.ok) {
+    throw new Error("Failed to delete project");
+  }
+
+  return res.json();
+};
+
 export const getCallById = async (id) => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/calls/${id}`, {
     cache: "no-store",
@@ -49,4 +61,27 @@ export const getCallById = async (id) => {
   }
   
   return res.json();
+};
+
+
+ export const createProject = async (projectData) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_BASE}/api/projects`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(projectData),
+    }
+  );
+
+  const data = await res.json();
+
+  if (!res.ok) {
+    console.log("CREATE ERROR:", data);
+    throw new Error(data.message || "Failed to create project");
+  }
+
+  return data;
 };
