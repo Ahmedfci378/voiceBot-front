@@ -15,9 +15,10 @@ export default function ChatbotPage() {
      اتصال Socket
   ==========================*/
   useEffect(() => {
-    const socket = io(process.env.NEXT_PUBLIC_API_BASE, {
-      query: { sessionId },
-    });
+        const socket = io(process.env.NEXT_PUBLIC_API_BASE, {
+        query: { sessionId: "dashboard_voice_1" },
+        transports: ["websocket"],
+        });
     socketRef.current = socket;
 
     socket.on("connect", () => {
