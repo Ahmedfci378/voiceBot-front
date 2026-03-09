@@ -9,16 +9,16 @@ export default function ChatbotPage() {
 
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  const sessionId = "dashboard_voice_1";
+  const sessionIdRef = useRef("dashboard_voice_1"); // نستخدم ref علشان نقدر نغيره
 
   /* =========================
      اتصال Socket
   ==========================*/
   useEffect(() => {
-        const socket = io(process.env.NEXT_PUBLIC_API_BASE, {
-        query: { sessionId: "dashboard_voice_1" },
-        transports: ["websocket"],
-        });
+    const socket = io("http://localhost:3000", {
+      query: { sessionId: sessionIdRef.current },
+      transports: ["websocket"],
+    });
     socketRef.current = socket;
 
     socket.on("connect", () => {
@@ -28,6 +28,13 @@ export default function ChatbotPage() {
     socket.on("bot_response", (data) => {
       addMessage("bot", data.message);
       speak(data.message);
+    });
+
+    // ==== استقبال إعادة الشات ====
+    socket.on("chat_reset", (data) => {
+      setMessages([]); // نمسح الرسائل القديمة
+      sessionIdRef.current = data.sessionId; // نحدث sessionId
+      addMessage("bot", data.message); // رسالة تأكيد
     });
 
     return () => socket.disconnect();
@@ -49,11 +56,18 @@ export default function ChatbotPage() {
     addMessage("user", input);
 
     socketRef.current.emit("user_message", {
-      sessionId,
+      sessionId: sessionIdRef.current,
       message: input,
     });
 
     setInput("");
+  };
+
+  /* =========================
+     بدء شات جديد
+  ==========================*/
+  const startNewChat = () => {
+    socketRef.current.emit("new_chat", { sessionId: sessionIdRef.current });
   };
 
   /* =========================
@@ -76,7 +90,7 @@ export default function ChatbotPage() {
       addMessage("user", text);
 
       socketRef.current.emit("user_message", {
-        sessionId,
+        sessionId: sessionIdRef.current,
         message: text,
       });
     };
@@ -107,6 +121,13 @@ export default function ChatbotPage() {
     <div style={styles.container}>
       <div style={styles.chatBox}>
         <h2>🤖 AI Assistant</h2>
+
+        <div style={{ marginBottom: "10px" }}>
+          {/* زر شات جديد */}
+          <button onClick={startNewChat} style={styles.newChatButton}>
+            🆕 New Chat
+          </button>
+        </div>
 
         <div style={styles.messages}>
           {messages.map((msg, index) => (
@@ -152,7 +173,7 @@ export default function ChatbotPage() {
 }
 
 /* =========================
-   Styles
+   Styles كاملة
 ==========================*/
 const styles = {
   container: {
@@ -160,7 +181,7 @@ const styles = {
     justifyContent: "center",
     alignItems: "center",
     height: "100vh",
-    background: "linear-gradient(135deg, #667eea, #764ba2)", // خلفية متدرجة جذابة
+    background: "linear-gradient(135deg, #667eea, #764ba2)",
     fontFamily: "'Inter', sans-serif",
     padding: "20px",
   },
@@ -227,10 +248,6 @@ const styles = {
     fontWeight: "600",
     transition: "all 0.2s",
   },
-  buttonHover: {
-    transform: "scale(1.05)",
-    boxShadow: "0 5px 15px rgba(0,0,0,0.2)",
-  },
   voiceButton: {
     padding: "12px 16px",
     borderRadius: "12px",
@@ -241,8 +258,14 @@ const styles = {
     fontWeight: "600",
     transition: "all 0.2s",
   },
-  voiceHover: {
-    transform: "scale(1.05)",
-    boxShadow: "0 5px 15px rgba(0,0,0,0.2)",
+  newChatButton: {
+    padding: "8px 12px",
+    borderRadius: "12px",
+    background: "linear-gradient(90deg, #f59e0b, #d97706)",
+    color: "#fff",
+    border: "none",
+    cursor: "pointer",
+    fontWeight: "600",
+    transition: "all 0.2s",
   },
 };
