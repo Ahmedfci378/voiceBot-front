@@ -16,7 +16,7 @@ export default function ChatbotPage() {
      اتصال Socket
   ==========================*/
   useEffect(() => {
-    const socket = io("http://localhost:3000", {
+    const socket = io(process.env.NEXT_PUBLIC_API_BASE, {
       query: { sessionId: sessionIdRef.current },
       transports: ["websocket"],
     });
