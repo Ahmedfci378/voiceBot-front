@@ -5,7 +5,7 @@ import { getChat } from "@/lib/api";
 import { FiMessageSquare, FiUser, FiCpu } from "react-icons/fi";
 
 export default function ChatsPage() {
-  const [conversations, setConversations] = useState([]);
+  const [conversations, setConversations] = useState([]); // مهم: المحادثات كلها
   const [selected, setSelected] = useState(null);
   const [loading, setLoading] = useState(true);
   const chatEndRef = useRef(null);
@@ -23,6 +23,7 @@ export default function ChatsPage() {
 
         setConversations(data);
 
+        // Automatically select the latest session
         if (data && data.length > 0) {
           setSelected(data[data.length - 1]);
         } else {

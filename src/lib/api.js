@@ -99,3 +99,17 @@ export const getChat = async () => {
   const data = await res.json();
   return data || []; // لو null أو undefined ارجع array فاضية
 };  
+
+export const getChatById = async (id) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/conversations/${id}`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    console.error(`Failed to fetch conversation ${id}:`, res.status, res.statusText);
+    return null; // لو في مشكلة نرجع null
+  }
+
+  const data = await res.json();
+  return data || null; // لو null أو undefined ارجع null
+};

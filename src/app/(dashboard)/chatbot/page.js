@@ -10,13 +10,23 @@ export default function ChatbotPage() {
   const recognitionRef = useRef(null);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  const sessionIdRef = useRef("dashboard_voice_1");
 
+  
+const sessionIdRef = useRef(
+  typeof window !== "undefined"
+    ? localStorage.getItem("sessionId") ||
+        (() => {
+          const id = crypto.randomUUID();
+          localStorage.setItem("sessionId", id);
+          return id;
+        })()
+    : null
+);
   /* =========================
      Socket Connection
   ==========================*/
   useEffect(() => {
-    const socket = io(process.env.NEXT_PUBLIC_API_BASE, {
+    const socket = io("http://localhost:3000", {
       query: { sessionId: sessionIdRef.current },
       transports: ["websocket"],
     });
