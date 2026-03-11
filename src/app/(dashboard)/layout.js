@@ -9,6 +9,7 @@ import {
   FiCpu,
   FiBarChart2,
   FiUsers,
+  FiMessageSquare,
   FiSettings,
 } from "react-icons/fi";
 
@@ -20,6 +21,8 @@ export default function DashboardLayout({ children }) {
     { name: "Calls", icon: <FiPhone />, path: "/calls" },
     { name: "Projects", icon: <FiBox />, path: "/projects" },
     { name: "ChatBot", icon: <FiCpu />, path: "/chatbot" },
+    { name: "Chats", icon: <FiMessageSquare />, path: "/chats" }
+
   ];
 
   const features = [

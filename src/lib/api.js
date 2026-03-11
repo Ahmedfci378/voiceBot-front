@@ -85,3 +85,17 @@ export const getCallById = async (id) => {
 
   return data;
 };
+ 
+export const getChat = async () => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE}/api/conversations`, {
+    cache: "no-store",
+  });
+
+  if (!res.ok) {
+    console.error("Failed to fetch conversations:", res.status, res.statusText);
+    return []; // بدل ما يرجع خطأ null، ارجع مصفوفة فاضية
+  }
+
+  const data = await res.json();
+  return data || []; // لو null أو undefined ارجع array فاضية
+};  
