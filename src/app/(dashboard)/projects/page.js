@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getProjects, createProject, deleteProject } from "@/lib/api";
+import { MapPin, Trash2, PlusCircle } from "lucide-react";
 
 export default function ProjectsPage() {
   const [projects, setProjects] = useState([]);
@@ -20,9 +21,9 @@ export default function ProjectsPage() {
     features: "",
   });
 
-  /* ===============================
-     Fetch Projects
-  =================================*/
+  // ===============================
+  // Fetch Projects
+  // ===============================
   useEffect(() => {
     fetchProjects();
   }, []);
@@ -39,20 +40,19 @@ export default function ProjectsPage() {
     }
   };
 
-  /* ===============================
-     Handle Form Change
-  =================================*/
+  // ===============================
+  // Handle Form Change
+  // ===============================
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  /* ===============================
-     Create Project
-  =================================*/
+  // ===============================
+  // Create Project
+  // ===============================
   const handleCreate = async () => {
     try {
       setSubmitting(true);
-
       await createProject({
         ...form,
         startingPrice: Number(form.startingPrice),
@@ -76,7 +76,6 @@ export default function ProjectsPage() {
       });
 
       fetchProjects();
-
     } catch (err) {
       alert(err.message);
     } finally {
@@ -84,9 +83,9 @@ export default function ProjectsPage() {
     }
   };
 
-  /* ===============================
-     Delete Project
-  =================================*/
+  // ===============================
+  // Delete Project
+  // ===============================
   const handleDelete = async (id) => {
     if (!confirm("Are you sure you want to delete this project?")) return;
 
@@ -98,27 +97,30 @@ export default function ProjectsPage() {
     }
   };
 
-  /* ===============================
-     Loading State
-  =================================*/
+  // ===============================
+  // Loading State
+  // ===============================
   if (loading) {
     return (
-      <div className="text-center py-5">
-        <div className="spinner-border" />
+      <div className="d-flex justify-content-center align-items-center vh-100">
+        <div className="spinner-border text-primary"></div>
       </div>
     );
   }
 
   return (
-    <div>
+    <div className="container py-5">
 
-      <h2 className="fw-bold mb-4">🏗 Projects Management</h2>
+      {/* Header */}
+      <h2 className="fw-bold mb-4 d-flex align-items-center gap-2">
+        <PlusCircle size={24} /> Projects Management
+      </h2>
 
       {/* ===============================
            Create Project Form
       =================================*/}
       <div className="card shadow-sm p-4 mb-5 rounded-4">
-        <h5 className="mb-3">➕ Add New Project</h5>
+        <h5 className="mb-3 fw-bold">Add New Project</h5>
 
         <div className="row g-3">
 
@@ -216,7 +218,6 @@ export default function ProjectsPage() {
         >
           {submitting ? "Saving..." : "Save Project"}
         </button>
-
       </div>
 
       {/* ===============================
@@ -232,23 +233,20 @@ export default function ProjectsPage() {
 
         {projects.map((project) => (
           <div className="col-md-6 col-lg-4" key={project._id}>
-            <div className="card shadow-sm border-0 rounded-4 p-3 h-100">
+            <div className="card shadow-sm border-0 rounded-4 p-3 h-100 hover-shadow transition">
 
-              <div className="d-flex justify-content-between">
+              <div className="d-flex justify-content-between align-items-start">
                 <h5 className="fw-bold">{project.name}</h5>
-
-                <span className="badge bg-success">
-                  {project.type}
+                <span className={`badge ${project.type === 'residential' ? 'bg-success' : 'bg-warning text-dark'}`}>
+                  {project.type.toUpperCase()}
                 </span>
               </div>
 
-              <p className="text-muted mb-1">
-                📍 {project.location}
+              <p className="text-muted mb-1 d-flex align-items-center gap-1">
+                <MapPin size={16} /> {project.location}
               </p>
 
-              <p className="small">
-                {project.description}
-              </p>
+              <p className="small">{project.description}</p>
 
               <div className="small">
                 <strong>Price:</strong>{" "}
@@ -261,16 +259,12 @@ export default function ProjectsPage() {
                 {project.installmentYears} years
               </div>
 
-              {/* Features Display */}
               {project.features?.length > 0 && (
                 <div className="mt-2">
                   <strong>Features:</strong>
                   <div className="d-flex flex-wrap gap-1 mt-1">
                     {project.features.map((f, i) => (
-                      <span
-                        key={i}
-                        className="badge bg-light text-dark border"
-                      >
+                      <span key={i} className="badge bg-light text-dark border">
                         {f}
                       </span>
                     ))}
@@ -279,12 +273,12 @@ export default function ProjectsPage() {
               )}
 
               {/* Actions */}
-              <div className="mt-3">
+              <div className="mt-3 d-flex justify-content-end gap-2">
                 <button
-                  className="btn btn-outline-danger btn-sm"
+                  className="btn btn-outline-danger btn-sm d-flex align-items-center gap-1"
                   onClick={() => handleDelete(project._id)}
                 >
-                  Delete
+                  <Trash2 size={16} /> Delete
                 </button>
               </div>
 
@@ -293,7 +287,6 @@ export default function ProjectsPage() {
         ))}
 
       </div>
-
     </div>
   );
 }

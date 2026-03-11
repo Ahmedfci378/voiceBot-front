@@ -2,91 +2,133 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import {
+  FiHome,
+  FiPhone,
+  FiBox,
+  FiCpu,
+  FiBarChart2,
+  FiUsers,
+  FiSettings,
+} from "react-icons/fi";
 
 export default function DashboardLayout({ children }) {
   const pathname = usePathname();
 
-  const isActive = (path) => pathname === path;
-
-  const menuItems = [
-    { name: "Dashboard", icon: "📊", path: "/dashboard" },
-    { name: "Calls", icon: "📞", path: "/calls" },
-    { name: "Projects", icon: "🏗", path: "/projects"},
-    { name: "ChatBot", icon: "🤖", path: "/chatbot"},
-
+  const menu = [
+    { name: "Dashboard", icon: <FiHome />, path: "/dashboard" },
+    { name: "Calls", icon: <FiPhone />, path: "/calls" },
+    { name: "Projects", icon: <FiBox />, path: "/projects" },
+    { name: "ChatBot", icon: <FiCpu />, path: "/chatbot" },
   ];
 
   const features = [
-    { name: "campaigns", icon: "🤖", path: "/campaigns" },
-    { name: "Analytics", icon: "📈", path: "/analysis" },
-    { name: "Leads", icon: "👥", path: "/leads" },
-    { name: "Settings", icon: "⚙", path: "/settings" },
+    { name: "Analytics", icon: <FiBarChart2 />, path: "/analysis" },
+    { name: "Leads", icon: <FiUsers />, path: "/leads" },
+    { name: "Settings", icon: <FiSettings />, path: "/settings" },
   ];
 
   return (
-    <div className="d-flex min-vh-100">
-
+    <div style={{ display: "flex", minHeight: "100vh" }}>
+      
       {/* Sidebar */}
-      <div className="sidebar">
+      <aside
+        style={{
+          width: "250px",
+          background: "#0f172a",
+          color: "white",
+          padding: "20px",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "space-between",
+        }}
+      >
+        <div>
+          <h3 style={{ marginBottom: 30 }}>Palm Hills</h3>
 
-        {/* Logo */}
-        <div className="sidebar-logo">
-          <h3>🏢 Palm Hills</h3>
-          <span>AI Sales Assistant</span>
-        </div>
+          <p style={{ fontSize: 12, color: "#64748b" }}>MAIN</p>
 
-        {/* MAIN */}
-        <div className="sidebar-section">
-          <p className="sidebar-title">MAIN</p>
-
-          {menuItems.map((item) => (
+          {menu.map((item) => (
             <Link
               key={item.path}
               href={item.path}
-              className={`sidebar-link ${
-                isActive(item.path) ? "active-link" : ""
-              }`}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                padding: "10px",
+                borderRadius: "8px",
+                marginBottom: "6px",
+                textDecoration: "none",
+                color: pathname === item.path ? "white" : "#cbd5f5",
+                background:
+                  pathname === item.path ? "#2563eb" : "transparent",
+              }}
             >
-              <span className="icon">{item.icon}</span>
+              {item.icon}
               {item.name}
             </Link>
           ))}
-        </div>
 
-        {/* FEATURES */}
-        <div className="sidebar-section">
-          <p className="sidebar-title">FEATURES</p>
+          <p style={{ fontSize: 12, color: "#64748b", marginTop: 20 }}>
+            FEATURES
+          </p>
 
           {features.map((item) => (
             <Link
               key={item.path}
               href={item.path}
-              className={`sidebar-link ${
-                isActive(item.path) ? "active-link" : ""
-              }`}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "10px",
+                padding: "10px",
+                borderRadius: "8px",
+                marginBottom: "6px",
+                textDecoration: "none",
+                color: pathname === item.path ? "white" : "#cbd5f5",
+                background:
+                  pathname === item.path ? "#2563eb" : "transparent",
+              }}
             >
-              <span className="icon">{item.icon}</span>
+              {item.icon}
               {item.name}
             </Link>
           ))}
         </div>
 
-        {/* User */}
-        <div className="sidebar-user">
-          <div className="user-avatar">A</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div
+            style={{
+              width: 36,
+              height: 36,
+              background: "#334155",
+              borderRadius: "50%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            A
+          </div>
+
           <div>
-            <div className="user-name">Ahmed</div>
-            <div className="user-role">Admin</div>
+            <div style={{ fontWeight: 600 }}>Ahmed</div>
+            <small>Admin</small>
           </div>
         </div>
+      </aside>
 
-      </div>
-
-      {/* Content */}
-      <div className="content-area">
+      {/* Page Content */}
+      <main
+        style={{
+          flex: 1,
+          background: "#f1f5f9",
+          padding: "30px",
+        }}
+      >
         {children}
-      </div>
-
+      </main>
     </div>
   );
 }

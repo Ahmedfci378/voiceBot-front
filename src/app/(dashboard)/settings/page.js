@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { FiSettings, FiBriefcase, FiCpu, FiPhone, FiLink, FiSave } from "react-icons/fi";
 
 export default function SettingsPage() {
 
@@ -13,18 +14,26 @@ export default function SettingsPage() {
   };
 
   return (
-    <div>
+    <div className="container py-4">
 
-      <h2 className="fw-bold mb-4">⚙ Settings</h2>
+      <div className="d-flex align-items-center gap-2 mb-4">
+        <FiSettings size={24}/>
+        <h2 className="fw-bold m-0">Settings</h2>
+      </div>
 
       <div className="row g-4">
 
         {/* Company Settings */}
         <div className="col-lg-6">
-          <div className="card shadow-sm rounded-4 p-4">
-            <h5 className="mb-3">🏢 Company</h5>
+          <div className="card shadow-sm rounded-4 p-4 border-0 bg-light">
 
-            <label className="form-label">Company Name</label>
+            <div className="d-flex align-items-center gap-2 mb-3">
+              <FiBriefcase/>
+              <h5 className="text-primary fw-bold m-0">Company</h5>
+            </div>
+
+            <label className="form-label fw-semibold">Company Name</label>
+
             <input
               type="text"
               className="form-control mb-3"
@@ -32,16 +41,25 @@ export default function SettingsPage() {
               onChange={(e) => setCompanyName(e.target.value)}
             />
 
+            <small className="text-muted">
+              This name will appear in calls & reports.
+            </small>
+
           </div>
         </div>
 
+
         {/* AI Settings */}
         <div className="col-lg-6">
-          <div className="card shadow-sm rounded-4 p-4">
-            <h5 className="mb-3">🤖 AI Settings</h5>
+          <div className="card shadow-sm rounded-4 p-4 border-0 bg-light">
 
-            <label className="form-label">
-              Temperature: {temperature}
+            <div className="d-flex align-items-center gap-2 mb-3">
+              <FiCpu/>
+              <h5 className="text-primary fw-bold m-0">AI Settings</h5>
+            </div>
+
+            <label className="form-label fw-semibold">
+              Temperature: <span className="text-dark">{temperature}</span>
             </label>
 
             <input
@@ -49,47 +67,68 @@ export default function SettingsPage() {
               min="0"
               max="1"
               step="0.1"
-              className="form-range mb-3"
+              className="form-range mb-2"
               value={temperature}
               onChange={(e) => setTemperature(e.target.value)}
             />
 
+            <small className="text-muted">
+              Higher values = more creative responses.
+            </small>
+
           </div>
         </div>
 
+
         {/* Call Settings */}
         <div className="col-lg-6">
-          <div className="card shadow-sm rounded-4 p-4">
-            <h5 className="mb-3">📞 Call Settings</h5>
+          <div className="card shadow-sm rounded-4 p-4 border-0 bg-light">
+
+            <div className="d-flex align-items-center gap-2 mb-3">
+              <FiPhone/>
+              <h5 className="text-primary fw-bold m-0">Call Settings</h5>
+            </div>
 
             <div className="form-check form-switch">
+
               <input
                 className="form-check-input"
                 type="checkbox"
                 checked={autoCallback}
                 onChange={() => setAutoCallback(!autoCallback)}
               />
-              <label className="form-check-label">
+
+              <label className="form-check-label fw-semibold">
                 Enable Auto Callback
               </label>
+
             </div>
+
+            <small className="text-muted">
+              Automatically follow up missed calls.
+            </small>
 
           </div>
         </div>
 
+
         {/* Integrations */}
         <div className="col-lg-6">
-          <div className="card shadow-sm rounded-4 p-4">
-            <h5 className="mb-3">🔗 Integrations</h5>
+          <div className="card shadow-sm rounded-4 p-4 border-0 bg-light">
+
+            <div className="d-flex align-items-center gap-2 mb-3">
+              <FiLink/>
+              <h5 className="text-primary fw-bold m-0">Integrations</h5>
+            </div>
 
             <div className="mb-2">
-              <span className="badge bg-success">
+              <span className="badge bg-success px-3 py-2">
                 Twilio Connected
               </span>
             </div>
 
             <div>
-              <span className="badge bg-success">
+              <span className="badge bg-success px-3 py-2">
                 OpenAI Connected
               </span>
             </div>
@@ -99,12 +138,18 @@ export default function SettingsPage() {
 
       </div>
 
-      <button
-        className="btn btn-dark mt-4 px-4"
-        onClick={handleSave}
-      >
-        💾 Save Changes
-      </button>
+
+      <div className="mt-4 text-end">
+
+        <button
+          className="btn btn-primary btn-lg px-4 d-inline-flex align-items-center gap-2"
+          onClick={handleSave}
+        >
+          <FiSave/>
+          Save Changes
+        </button>
+
+      </div>
 
     </div>
   );
