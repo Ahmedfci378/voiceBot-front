@@ -26,7 +26,7 @@ const sessionIdRef = useRef(
      Socket Connection
   ==========================*/
   useEffect(() => {
-    const socket = io(process.env.NEXT_PUBLIC_API_BASE, {
+    const socket = io("http://localhost:3000", {
       query: { sessionId: sessionIdRef.current },
       transports: ["websocket"],
     });
@@ -73,35 +73,50 @@ const sessionIdRef = useRef(
   /* =========================
      Voice Recognition
   ==========================*/
-  const startListening = () => {
-    const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
+ const startListening = async () => {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+    alert("Microphone access not supported");
+    return;
+  }
 
-    if (!SpeechRecognition) {
-      alert("Speech Recognition not supported");
-      return;
-    }
+  try {
+    // 1️⃣ نفتح الميكروفون
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const mediaRecorder = new MediaRecorder(stream);
+    const audioChunks = [];
 
-    const recognition = new SpeechRecognition();
-    recognition.lang = "ar-EG";
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 1;
-    recognitionRef.current = recognition;
-
-    recognition.onresult = (event) => {
-      const text = event.results[0][0].transcript;
-      addMessage("user", text);
-      socketRef.current.emit("user_message", {
-        sessionId: sessionIdRef.current,
-        message: text,
-      });
+    mediaRecorder.ondataavailable = (event) => {
+      audioChunks.push(event.data);
     };
 
-    recognition.onerror = (event) =>
-      console.error("SpeechRecognition Error:", event.error);
+    mediaRecorder.onstop = () => {
+      const audioBlob = new Blob(audioChunks, { type: "audio/wav" });
 
-    recognition.start();
-  };
+      // 2️⃣ نرسل الصوت للـ backend عبر Socket
+      const reader = new FileReader();
+      reader.onload = () => {
+        const arrayBuffer = reader.result;
+        socketRef.current.emit("audio_message", {
+          sessionId: sessionIdRef.current,
+          audioBuffer: arrayBuffer,
+        });
+      };
+      reader.readAsArrayBuffer(audioBlob);
+    };
+
+    // 3️⃣ نبدأ التسجيل
+    mediaRecorder.start();
+
+    // 4️⃣ نخلي التسجيل 5 ثواني أو حسب ما تحب
+    setTimeout(() => {
+      mediaRecorder.stop();
+      stream.getTracks().forEach((track) => track.stop());
+    }, 5000);
+
+  } catch (err) {
+    console.error("Microphone error:", err);
+  }
+};
 
   /* =========================
      Scroll to latest message
