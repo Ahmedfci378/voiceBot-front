@@ -26,15 +26,16 @@ const sessionIdRef = useRef(
      Socket Connection
   ==========================*/
   useEffect(() => {
-    const socket = io(process.env.NEXT_PUBLIC_API_BASE, {
+    const socket = io("http://localhost:3000", {
       query: { sessionId: sessionIdRef.current },
       transports: ["websocket"],
     });
+     socket.binaryType = "arraybuffer";
     socketRef.current = socket;
 
     socket.on("connect", () => console.log("Connected to server"));
 
-    socket.on("bot_response", (data) => addMessage("bot", data.message));
+    socket.on("bot_response", (data) => addMessage("bot",data.message));
 
     socket.on("bot_audio", (audioBuffer) => {
       const blob = new Blob([audioBuffer], { type: "audio/mp3" });
@@ -53,6 +54,8 @@ const sessionIdRef = useRef(
   }, []);
 
   const addMessage = (role, text) => {
+      console.log("Adding message:", role, text);
+
     setMessages((prev) => [...prev, { role, text }]);
   };
 
